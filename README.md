@@ -14,11 +14,11 @@ There are three main folders: **DATA**, **SOURCE CODE**, and **PRODUCTS**
      - Subfolder *Taxes*
    - Subfolder: ***Demographic***
      - Subfolder *Public Use Microdata Series*
-     - Subfloder *American Community Survey*
+     - Subfolder *American Community Survey*
 2. **SOURCE CODE FOLDER**
    - Subfolder: ***Visualizations***
    - Subfolder: ***Analyses***
-     - Subfloder *Household Living Budget*
+     - Subfolder *Household Living Budget*
      - Subfolder *Iterative Proportional Fitting*
      - Subfolder *Synthetic Population*
 3. **DOCUMENTS FOLDER**
