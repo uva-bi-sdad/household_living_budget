@@ -1,0 +1,4 @@
+This folder contains three subfolders:
+1. R code used to construct the HLB;
+2. R code used for iterative proportional fitting; and
+3. R code used to construct the synthetic populations.
