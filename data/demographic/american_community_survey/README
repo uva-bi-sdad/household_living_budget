@@ -1,4 +1,6 @@
-ACS files are pulled down from the CENSUS API within the R code; see files #########.R, #########.R, and #########.R.
+ACS files were pulled down from the CENSUS API within the R code. 
+See files #########.R, #########.R, and #########.R for examples.
+The ACS data that was used:
 - B11016 | HOUSEHOLD TYPE BY HOUSEHOLD SIZE 2021 5-YR Estimates
 - S1901 | INCOME IN THE PAST 12 MONTHS (IN 2021 INFLATION-ADJUSTED DOLLARS) 2021 5-YR Estimates
 - C17002 | RATIO OF INCOME TO POVERTY LEVEL IN THE PAST 12 MONTHS  2021 5-YR Estimates
