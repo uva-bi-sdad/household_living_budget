@@ -1,3 +1,3 @@
 The data folder has two subfolders: 
-1. the first contains the data used to construct the household living budget;
-2. the second contains the demographic data. 
+1. data used to construct the household living budget;
+2. demographic data used for the iterative proprtional fitting and to construct the synthetic population. 
