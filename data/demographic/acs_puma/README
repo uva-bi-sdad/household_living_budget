@@ -1,1 +1,12 @@
 ACS 5-YR household data from the University of Minnesota’s Integrated Public Use Microdata Series.
+
+NOTES (taken from IPUMS): 
+To load data, you must download both the extract's data and the DDI
+and also set the working directory to the folder with these files (or change the path below).
+
+Also, make sure to install packages in R: install.packages('ipumsr')
+
+The data set loads with these two lines:
+
+ddi <- read_ipums_ddi("--file name--.xml")
+data <- read_ipums_micro(ddi)
