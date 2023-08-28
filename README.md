@@ -15,6 +15,7 @@ There are three main folders: **DATA**, **SOURCE CODE**, and **PRODUCTS**
    - Subfolder: ***Demographic***
      - Subfolder *Public Use Microdata Series*
      - Subfolder *American Community Survey*
+     - Subfolder *Crosswalks*
 2. **SOURCE CODE FOLDER**
    - Subfolder: ***Visualizations***
    - Subfolder: ***Analyses***
