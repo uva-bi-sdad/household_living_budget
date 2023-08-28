@@ -1,1 +1,3 @@
-This folder contains the HLB estimates for a particular household combination and census tract.
+This folder contains:
+the HLB estimates for a particular household combination and census tract; and
+the ipf estimates by census tract for household size and income category.
