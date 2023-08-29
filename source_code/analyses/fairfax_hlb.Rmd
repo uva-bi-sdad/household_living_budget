@@ -18,13 +18,15 @@ rm(list=ls())
 ```{r}
 #install.packages("ipumsr")
 library(ipumsr)
-library(tidyverse)
+#install.packages("tidyverse")
+#library(tidyverse)
 library(survival)
 library(ggfortify)
 library(dplyr)
 library(readxl)
 library(readr)
 library(reshape2)
+library(tidyr)
 ```
 
 #  ######################## 1 DETAILS: Specify the fips code for the State and county ########################
@@ -44,8 +46,25 @@ name_files <- "fairfax"
 # Household (HH) configuration by PUMA becomes HH configuration by tract
 ```{r}
 #Load data from ipums
-ddi_2020_5year <- read_ipums_ddi("~/git/household_living_budget/data/demographic/acs_puma/fairfax_va_acs_puma_households_2020.xml")
+#ddi_2020_5year <- read_ipums_ddi("~/git/household_living_budget/data/demographic/acs_puma/fairfax_va_acs_puma_households_2020.xml")
+
+#1 URLs of raw data files
+#url xml file
+url_xml <- "https://raw.githubusercontent.com/uva-bi-sdad/household_living_budget/main/data/demographic/acs_puma/fairfax_va_acs_puma_households_2020.xml"
+#url gz file with data
+url_gz <- "https://github.com/uva-bi-sdad/household_living_budget/raw/main/data/demographic/acs_puma/fairfax_va_acs_puma_households_2020.dat.gz" 
+
+#2. download files
+download.file(url_xml,'fairfax_va_acs_puma_households_2020.xml')
+download.file(url_gz,'fairfax_va_acs_puma_households_2020.dat.gz')
+
+#3. read xml to obtain key to data
+ddi_2020_5year <- read_ipums_ddi('fairfax_va_acs_puma_households_2020.xml')
+
+#4. rename file with appropiate name
 ddi_2020_5year$file_name <- "fairfax_va_acs_puma_households_2020.dat"
+
+#read data 
 data <- read_ipums_micro(ddi_2020_5year)
 
 #Using data from ipums
@@ -199,10 +218,12 @@ puma_ct_fairfax_20 <- puma_ct_fairfax_20 %>% mutate(PUMA5CE= case_when(PUMA5CE_2
 #https://map.feedingamerica.org/county/2020/overall/virginia
 
 #data counties VA
-food_cost_adj <- read_excel("~/git/household_living_budget/data/household_living_budget/food/va_ct_usda_sep22_adjusted_low_cost_meal_plan_costs.xlsx")
+# food_cost_adj <- read_excel("~/git/household_living_budget/data/household_living_budget/food/va_ct_usda_sep22_adjusted_low_cost_meal_plan_costs.xlsx")
+food_cost_adj <- read_excel("~/git/household_living_budget/data/household_living_budget/food/va_ct_feeding_america_map_meal_gap_2022SEP.xlsx")
 
 #data USDA USA
-usda_meal_plan_sep2022 <- read_csv("~/git/household_living_budget/data/household_living_budget/food/usda_meal_plan_sep2022.csv", skip = 1)
+# usda_meal_plan_sep2022 <- read_csv("~/git/household_living_budget/data/household_living_budget/food/usda_meal_plan_sep2022.csv", skip = 1)
+usda_meal_plan_sep2022 <- read_csv("~/git/household_living_budget/data/household_living_budget/food/national_usda_meal_plans_2022SEP.csv", skip = 1)
 
 #data USDA categories and cost
 usda_low_cost_meal <- usda_meal_plan_sep2022 %>% select(group=`...2`, monthly_cost=`Low-cost...6`) %>% filter( !is.na(monthly_cost)) %>% filter(monthly_cost!= 'plan')
@@ -894,7 +915,7 @@ housing_cost_long <- housing_cost_county %>% pivot_longer(cols=c(`1` ,  `2`  , `
 # Cost of Transportation
 ```{r}
 #data va 2022 updated
-transp_cost_va <- read_excel("~/git/household_living_budget/data/household_living_budget/transportation/va_tr_cnt_2022_transportation_cost_family.xlsx")
+transp_cost_va <- read_excel("~/git/household_living_budget/data/household_living_budget/transportation/va_tr_cnt_transportation_cost_2022.xlsx")
 
 ####
 #create fips
@@ -980,12 +1001,10 @@ df_hlb_tic <- df_hlb_tic %>% mutate(other_month = (food_cost_month+housing_cost_
 ```{r}
 
 #save file in 
-if(!file.exists( paste0("~/git/household_living_budget/data/household_living_budget/hlb_estimates/", name_files, "_", state_name, "_cde_hlb_no_tax_2022.csv") )){
+if(!file.exists( paste0("~/git/household_living_budget/documents/products/data_tables/", name_files, "_", state_name, "_hlb_no_tax_2022.csv") )){
   
-  write.csv(df_hlb_tic, paste0("~/git/household_living_budget/data/household_living_budget/hlb_estimates/", name_files, "_", state_name, "_cde_hlb_no_tax_2022.csv") , row.names = FALSE)
+  write.csv.gz(df_hlb_tic, paste0("~/git/household_living_budget/documents/products/data_tables/", name_files, "_", state_name, "_hlb_no_tax_2022.csv") , row.names = FALSE)
 }
-
-#cde: curated data enterprise - multiple sources of information, see paper.
 
 ```
 

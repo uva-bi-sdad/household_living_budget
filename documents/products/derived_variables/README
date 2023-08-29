@@ -1,3 +1,6 @@
-This folder contains:
-1. HLB estimates for a particular household combination and census tract; and
-2. ipf estimates by census tract for household size and income category.
+This folder contains the ipf estimates by census tract for household size and income category.
+
+Variables
+ipf: number of households under every category of income and household size
+income_recode:  nine income categories.  See code fairfax_ipf_procedure.Rmd for details
+size_recode: household size categories.  1, 2, 3, 4, or 5 or larger than five.  See code fairfax_ipf_procedure.Rmd for details

@@ -18,14 +18,17 @@ rm(list=ls())
 ```{r}
 #install.packages("ipumsr")
 library(ipumsr)
-library(tidyverse)
+# install.packages("tidyverse")
+# library(tidyverse)
 library(survival)
 library(ggfortify)
 library(dplyr)
 library(readxl)
+# install.packages("tidycensus")
 library(tidycensus)
 library(ggplot2)
 library(viridis)
+# install.packages("acs")
 library(acs)
 library(mipfp)
 library(reshape2)
@@ -392,7 +395,7 @@ names(list_goodfit) <- vector
 ipf <- NULL
 ipf_full <- NULL
 
-
+library(tibble)
 #make long list with all tracts with ipf
 for(j in vector){
 test <- list_ipf[[as.character(j)]]
@@ -403,16 +406,41 @@ ipf_full <- rbind(ipf, ipf_full)
 
 ```
 
+#change categories
+
+```{r}
+ipf_full <- ipf_full %>% mutate(income_recode = case_when(rowname == "I.1" ~ 1,
+                                                          rowname == "I.2" ~ 2,
+                                                          rowname == "I.3" ~ 3,
+                                                          rowname == "I.4" ~ 4,
+                                                          rowname == "I.5" ~ 5,
+                                                          rowname == "I.6" ~ 6,
+                                                          rowname == "I.7" ~ 7,
+                                                          rowname == "I.8" ~ 8,
+                                                          rowname == "I.9" ~ 9
+                                                          ), 
+                                size_recode = case_when( variable == "hh1" ~ 1,
+                                                         variable == "hh2" ~ 2,
+                                                         variable == "hh3" ~ 3,
+                                                         variable == "hh4" ~ 4,
+                                                         variable == "hh5" ~ 5
+                                                         ), 
+                                ipf = round(value, 0)
+                                ) %>% 
+  select(geoid, income_recode, size_recode, ipf)
+
+```
+
+
 # Save file
 ```{r}
 
 #save file in 
-if(!file.exists( paste0("~/git/household_living_budget/data/demographic/ipf_exercise/", name_files, "_", state_name, "_acs_puma_ipf_exercise_2022.csv") )){
+if(!file.exists( paste0("~/git/household_living_budget/documents/products/derived_variables/", name_files, "_", state_name, "_acs_ipf_estimates_2022.csv") )){
   
-  write.csv(ipf_full, paste0("~/git/household_living_budget/data/demographic/ipf_exercise/", name_files, "_", state_name, "_acs_puma_ipf_exercise_2022.csv") , row.names = FALSE)
+  write.csv(ipf_full, paste0("~/git/household_living_budget/documents/products/derived_variables/", name_files, "_", state_name, "_acs_ipf_estimates_2022.csv") , row.names = FALSE)
 }
 
-#cde: curated data enterprise - multiple sources of information, see paper.
 
 ```
 

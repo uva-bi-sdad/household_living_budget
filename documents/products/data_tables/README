@@ -1,1 +1,10 @@
 This folder contains data tables integrated with the derived variables.
+
+File: faifax_va_hlb_no_tax_2022.csv
+Data set with HLB information of census tracts, income category and household combinations.
+With this file, proceed to sample to create the synthetic population.
+This is a CSV to a compressed file
+
+The code is set so no new file is saved unless there is not an existing file faifax_va_hlb_no_tax_2022.csv
+
+
