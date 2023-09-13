@@ -1,4 +1,5 @@
-ACS files were pulled down from the CENSUS API within the R code. 
+ACS files were pulled down from the CENSUS API within the R code using the tidycensus package by
+Kyle Walker https://walker-data.com/. 
 See files #########.R, #########.R, and #########.R for examples.
 The ACS data that were used:
 - B11016 | HOUSEHOLD TYPE BY HOUSEHOLD SIZE 2021 5-YR Estimates
