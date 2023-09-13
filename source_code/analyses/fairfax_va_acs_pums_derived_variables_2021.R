@@ -1,7 +1,7 @@
 #Introduction into Census Microdata
 #https://walker-data.com/census-r/introduction-to-census-microdata.html
 
-#derived variables are added to the Farifax acs pums data: 
+#derived variables are added to the Fairfax acs pums data: 
 #income categories to match ACS Table S1901 (nine categories)
 #household size (5 categories: 1, 2, 3, 4, >=5)
 #index to match the 45 income categories by household size combinations
