@@ -1,5 +1,5 @@
 ACS PUMS 5-YR (2017-2021) files were pulled down from the CENSUS API within the R code using 
 the tidycensus package by Kyle Walker https://walker-data.com/. 
-See file fairfax_va_acs_puma_derived_variables_2021.R in the source_code folder for an example.
+See file fairfax_va_acs_pums_derived_variables_2021.R in the source_code folder for an example.
 
 
