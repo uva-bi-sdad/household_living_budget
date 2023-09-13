@@ -7,4 +7,4 @@ This folder contains:
    income_recode:  nine income categories. 
    size_recode: household size categories.  1, 2, 3, 4, or 5 or larger than five.   
 2. The derived variables added to the acs puma data.
-   See code in the source_code/analysis folder - fairfax_va_acs_puma_derived)variables_2021.R - for details.
+   See code in the source_code/analysis folder - fairfax_va_acs_pums_derived_variables_2021.R - for details.
