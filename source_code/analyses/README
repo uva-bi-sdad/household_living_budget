@@ -1,5 +1,5 @@
 This folder contains the R source code to:
 1. create the IPF estimates: fairfax_ipf_procedure.Rmd;
-2. add derived variables to the acs pums data: fairfax_va_acs_pums_derviced_variables_2021.R; 
+2. add derived variables to the acs pums data: fairfax_va_acs_pums_derived_variables_2021.R; 
 3.  
 4.
