@@ -1,6 +1,10 @@
-This folder contains the ipf estimates by census tract for household size and income category.
+This folder contains:
 
-Variables
-ipf: number of households under every category of income and household size
-income_recode:  nine income categories.  See code fairfax_ipf_procedure.Rmd for details
-size_recode: household size categories.  1, 2, 3, 4, or 5 or larger than five.  See code fairfax_ipf_procedure.Rmd for details
+1. The ipf estimates by census tract for household size and income category. 
+   See code in the source_code/analysis folder - fairfax_ipf_procedure.Rmd - for details.
+   Variables:
+   ipf: number of households under every category of income and household size
+   income_recode:  nine income categories. 
+   size_recode: household size categories.  1, 2, 3, 4, or 5 or larger than five.   
+2. The derived variables added to the acs puma data.
+   See code in the source_code/analysis folder - fairfax_va_acs_puma_derived)variables_2021.R - for details.
