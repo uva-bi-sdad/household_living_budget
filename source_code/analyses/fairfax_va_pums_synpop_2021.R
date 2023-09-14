@@ -474,6 +474,6 @@ fx.syn <- data.frame(rbind(syn59301,syn59302,syn59303,syn59304,syn59305,
 fx.syn$serialno <- as.factor(fx.syn$serialno)
 dim(fx.syn); summary(fx.syn)
 
-write.csv(fx.syn, "~/Documents/Documents/Food Insecurity/Data/COL_Fairfax/FINAL/fairfax_va_puma_synpop_2021.csv")
+write.csv(fx.syn, "~/Documents/Documents/Food Insecurity/Data/COL_Fairfax/FINAL/fairfax_va_pums_synpop_2021.csv")
 
 
