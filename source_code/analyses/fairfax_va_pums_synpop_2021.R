@@ -72,7 +72,7 @@ dim(syn59301)
 test <- apply(ipf_wide_59301[,3:no_tracts],1,sum); test <- test[test>0]
 data.frame(table(syn59301$index))[,2]-test
 
-rm(no_tracts, cell, missing_cell)
+rm(no_tracts, cells, missing_cell)
 
 
 ############################################################################
@@ -121,7 +121,7 @@ dim(syn59302)
 test <- apply(ipf_wide_59302[,3:no_tracts],1,sum); test <- test[test>0]
 data.frame(table(syn59302$index))[,2]-test
 
-rm(no_tracts, cell, missing_cell) 
+rm(no_tracts, cells, missing_cell) 
  
 
 ############################################################################
@@ -170,7 +170,7 @@ dim(syn59303)
 test <- apply(ipf_wide_59303[,3:no_tracts],1,sum); test <- test[test>0]
 data.frame(table(syn59303$index))[,2]-test
 
-rm(no_tracts, cell, missing_cell) 
+rm(no_tracts, cells, missing_cell) 
 
 
 ############################################################################
@@ -219,7 +219,7 @@ dim(syn59304)
 test <- apply(ipf_wide_59304[,3:no_tracts],1,sum); test <- test[test>0]
 data.frame(table(syn59304$index))[,2]-test
 
-rm(no_tracts, cell, missing_cell) 
+rm(no_tracts, cells, missing_cell) 
 
 
 ############################################################################
@@ -268,7 +268,7 @@ dim(syn59305)
 test <- apply(ipf_wide_59305[,3:no_tracts],1,sum); test <- test[test>0]
 data.frame(table(syn59305$index))[,2]-test
 
-rm(no_tracts, cell, missing_cell) 
+rm(no_tracts, cells, missing_cell) 
 
 
 ############################################################################
@@ -316,7 +316,7 @@ dim(syn59306)
 test <- apply(ipf_wide_59306[,3:no_tracts],1,sum); test <- test[test>0]
 data.frame(table(syn59306$index))[,2]-test
 
-rm(no_tracts, cell, missing_cell) 
+rm(no_tracts, cells, missing_cell) 
  
 
 ############################################################################
@@ -366,7 +366,7 @@ dim(syn59307)
 test <- apply(ipf_wide_59307[,3:no_tracts],1,sum); test <- test[test>0]
 data.frame(table(syn59307$index))[,2]-test
 
-rm(no_tracts, cell, missing_cell)
+rm(no_tracts, cells, missing_cell)
 
 
 ############################################################################
@@ -416,7 +416,7 @@ dim(syn59308)
 test <- apply(ipf_wide_59308[,3:no_tracts],1,sum); test <- test[test>0]
 data.frame(table(syn59308$index))[,2]-test
 
-rm(no_tracts, cell, missing_cell)
+rm(no_tracts, cells, missing_cell)
 
 
 ############################################################################
@@ -465,7 +465,7 @@ dim(syn59309)
 test <- apply(ipf_wide_59309[,3:no_tracts],1,sum); test <- test[test>0]
 data.frame(table(syn59309$index))[,2]-test
 
-rm(no_tracts, cell, missing_cell)
+rm(no_tracts, cells, missing_cell)
 
 
 #combine the data from the nine pumas
