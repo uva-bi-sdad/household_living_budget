@@ -2,9 +2,10 @@
 title: "IPF procedure for the HLB exercise"
 author: "cm"
 date: "12/26/2022"
+updated: "11/13/2023"
 output: html_document
 
-Notes: Revise best possible aggregation
+Notes: Include only Fairfax County. Falls Church and Fairfax City share PUMAs of Fairfax County but here, include only Fairfax County.
 ---
 
 ```{r setup, include=FALSE}
@@ -32,6 +33,7 @@ library(viridis)
 library(acs)
 library(mipfp)
 library(reshape2)
+library(readr)
 #install.packages("mipfp")
 ```
 
@@ -43,7 +45,7 @@ library(reshape2)
 # data <- read_ipums_micro(ddi_2020_5year)
 
 #Load data from ipums
-ddi_2020_5year <- read_ipums_ddi("~/git/household_living_budget/data/demographic/acs_puma/fairfax_va_acs_puma_households_2020.xml")
+ddi_2020_5year <- read_ipums_ddi("~/Documents/household_living_budget/data/demographic/acs_puma/fairfax_va_acs_puma_households_2020.xml")
 ddi_2020_5year$file_name <- "fairfax_va_acs_puma_households_2020.dat"
 data <- read_ipums_micro(ddi_2020_5year)
 ```
@@ -61,7 +63,6 @@ state_name <- "va"
 ```{r}
 # list of pumas - Fairfax County
 list_puma_county <- c(59301, 59302, 59303, 59304, 59305, 59306, 59307, 59308, 59309)
-#list_puma_county <- c(51244, 51245, 51246)
 
 #initiate list
 matrix_county <- list()
@@ -75,7 +76,7 @@ data_fairfax <- data %>% filter(PUMA %in% list_puma_county)
 data_county_puma <- data_fairfax %>% filter(HHINCOME!=9999999) %>% filter(HHINCOME>0) %>% filter(PUMA==i )
 
 #NEW Income increase
-rate_income_increase <- 0.0397 #0.0326  #0.05  #
+rate_income_increase <- 0.0397 
 
 #Information from 2020.  Update to 2022: adjust 2 years
 data_county_puma <- data_county_puma %>% mutate(HHINCOME = HHINCOME*(1+rate_income_increase)^2 )
@@ -93,8 +94,6 @@ data_county_puma$cat <- cut(data_county_puma$HHINCOME,
                                         '$150,000 to $199,999',
                                         '$200,000 or more')
                                )
-
-
 
 #recategorize hhsize
 data_county_puma$fam_recode <- ifelse(data_county_puma$FAMSIZE >= 5, 5, data_county_puma$FAMSIZE )
@@ -123,8 +122,13 @@ names(matrix_county) <- list_puma_county
 
 # puma_ct <- read_delim("~/git/cost-living/data/crosswalks/2010_Census_Tract_to_2010_PUMA.txt", delim = ",")
 # puma_ct_20 <- read_delim("~/git/cost-living/data/crosswalks/2020_Census_Tract_to_2020_PUMA.txt", delim = ",")
-puma_ct <- read_delim("~/git/household_living_budget/data/demographic/crosswalks/2010_Census_Tract_to_2010_PUMA.txt", delim = ",")
-puma_ct_20 <- read_delim("~/git/household_living_budget/data/demographic/crosswalks/2020_Census_Tract_to_2020_PUMA.txt", delim = ",")
+
+
+# wd <- getwd()
+#setwd("~/Documents/household_living_budget/")
+
+puma_ct <- read_delim("~/Documents/household_living_budget/data/demographic/crosswalks/2010_Census_Tract_to_2010_PUMA.txt", delim = ",")
+puma_ct_20 <- read_delim("~/Documents/household_living_budget/data/demographic/crosswalks/2020_Census_Tract_to_2020_PUMA.txt", delim = ",")
 
 # crosswalk for Fairfax County only
 puma_ct_fairfax <- puma_ct %>% filter(STATEFP=='51', COUNTYFP== '059')
@@ -132,10 +136,11 @@ puma_ct_fairfax <- puma_ct %>% filter(STATEFP=='51', COUNTYFP== '059')
 #puma_ct_fairfax_20 <- puma_ct_20 %>% filter(STATEFP=='51', COUNTYFP== '059')
 
 puma_ct_fairfax_20_county <- puma_ct_20 %>% filter(STATEFP=='51', COUNTYFP== '059')
-puma_ct_fairfax_20_city <- puma_ct_20 %>% filter(STATEFP=='51', COUNTYFP== '610')
-puma_ct_fairfax_20_fallschurch <- puma_ct_20 %>% filter(STATEFP=='51', COUNTYFP== '600')
+# puma_ct_fairfax_20_city <- puma_ct_20 %>% filter(STATEFP=='51', COUNTYFP== '610')
+# puma_ct_fairfax_20_fallschurch <- puma_ct_20 %>% filter(STATEFP=='51', COUNTYFP== '600')
 
-puma_ct_fairfax_20 <- rbind(puma_ct_fairfax_20_county, puma_ct_fairfax_20_city, puma_ct_fairfax_20_fallschurch)
+# puma_ct_fairfax_20 <- rbind(puma_ct_fairfax_20_county, puma_ct_fairfax_20_city, puma_ct_fairfax_20_fallschurch)
+puma_ct_fairfax_20 <- puma_ct_fairfax_20_county
 
 #puma_ct_fairfax_2 <- puma_ct_fairfax %>% head(2)
 puma_ct_fairfax$fips <- paste0(puma_ct_fairfax$STATEFP, puma_ct_fairfax$COUNTYFP, puma_ct_fairfax$TRACTCE )
@@ -170,7 +175,7 @@ fairfax_info <- puma_ct_fairfax_20 %>% select(fips, PUMA5CE)
 
 names(fairfax_info) <- c('tract', 'PUMA5CE')
 
-#vector <- c(51059415300)
+#vector
 vector <- fairfax_info$tract
 
 #Number of Households 
@@ -189,7 +194,7 @@ hhf_fairfax_ct <- get_acs(geography = "tract",
                                    hhf7 = 'B11016_008'
                                    ),
                      state = "VA",
-                     county = c("Falls Church City", "Fairfax County", "Fairfax City"),
+                     county = c("Fairfax County"), #"Falls Church City", "Fairfax City"),
                      survey = "acs5",
                      geometry = FALSE) %>% 
                       # deselect margin of error columns
@@ -207,7 +212,7 @@ hhnf_fairfax_ct <- get_acs(geography = "tract",
                                    hhnf7 = 'B11016_016'
                                    ), 
                      state = "VA",
-                     county = c("Falls Church City", "Fairfax County", "Fairfax City"),
+                     county = c("Fairfax County"), #"Falls Church City", "Fairfax City"),
                      survey = "acs5",
                      geometry = FALSE) %>% 
                       # deselect margin of error columns
@@ -235,7 +240,7 @@ prop_income_ct <- get_acs(geography = "tract",
                        I.15 = 'B19001_016',
                        I.16 = 'B19001_017'), 
                      state = "VA",
-                     county = c("Falls Church City", "Fairfax County", "Fairfax City"),
+                     county = c("Fairfax County"), #"Falls Church City", "Fairfax City"),
                      survey = "acs5",
                      output = "wide",
                      geometry = FALSE) %>% 
@@ -436,9 +441,9 @@ ipf_full <- ipf_full %>% mutate(income_recode = case_when(rowname == "I.1" ~ 1,
 ```{r}
 
 #save file in 
-if(!file.exists( paste0("~/git/household_living_budget/documents/products/derived_variables/", name_files, "_", state_name, "_acs_ipf_estimates_2022.csv") )){
+if(!file.exists( paste0("~/Documents/household_living_budget/documents/products/derived_variables/", name_files, "_", state_name, "_acs_ipf_estimates_2021.csv") )){
   
-  write.csv(ipf_full, paste0("~/git/household_living_budget/documents/products/derived_variables/", name_files, "_", state_name, "_acs_ipf_estimates_2022.csv") , row.names = FALSE)
+  write.csv(ipf_full, paste0("~/Documents/household_living_budget/documents/products/derived_variables/", name_files, "_", state_name, "_acs_ipf_estimates_2021.csv") , row.names = FALSE)
 }
 
 
