@@ -141,46 +141,6 @@ cor(ev_plot$pov_prev, ev_plot$HLB_prev, use="complete.obs")
 cor(ev_plot$pov_prev_plus, ev_plot$HLB_prev_plus, use="complete.obs")  
 cor(ev_plot$pov_prev_plus, ev_plot$HLB_prev, use="complete.obs")  
 
-#map of economically vulnerable households by census tracts
-ex6_fairfax_ev_prev_map <- ggplot() + 
-  geom_sf(data=ev_plot, aes(fill=group_ev1), color="grey") + 
-  scale_fill_manual(values=evpalette_orange, 
-                    na.value="grey",
-                    name="Prevalence of Household Incomes < Half the HLB",
-                    drop=FALSE, 
-                    labels=c("0     0.058","0.096","0.136","0.196","0.268","0.378","0.488"),
-                    na.translate=FALSE,
-                    guide=guide_legend(
-                      direction="horizontal",
-                      keyheight=unit(4, units="mm"),
-                      keywidth=unit(11/length(labels), units="mm"),
-                      title.position="top",
-                      title.hjust=0.5,
-                      label.hjust=1,
-                      nrow=1,
-                      byrow=TRUE,
-                      reverse=FALSE,
-                      label.position="bottom"
-                    )) +
-  labs(title="", 
-       subtitle="",
-       caption="Synthetic Population using IPUMS and\n ACS 2021 5-YR Tables B11016 and S1906") +
-  theme(panel.background=element_rect(fill="transparent"),
-        text=element_text(color="#22211d"),
-        plot.title=element_text(size=15, face="bold", hjust=0.5, vjust=1.0),
-        plot.subtitle=element_text(size=12, hjust=0.5, vjust=0.5),
-        plot.caption=element_text(size=9, hjust=0.5),
-        legend.title=element_text(size=10),
-        legend.text=element_text(size=8),
-        legend.position="bottom", 
-        axis.title=element_blank(),
-        axis.text=element_blank(),
-        axis.ticks=element_blank()) + 
-  theme_SDAD()
-
-#ggsave("ex6_fairfax_ev_prev_map.pdf", width=10, height=11)
-ex6_fairfax_ev_prev_map
-
 #scatter plot HLB prevalence versus Census poverty
 #C17002 POVERTY STATUS IN THE PAST 12 MONTHS OF FAMILIES
 prev1.lm <- lm(ev_plot$pov_prev ~ ev_plot$HLB_prev, ev_plot)
