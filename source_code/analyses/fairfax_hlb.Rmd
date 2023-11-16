@@ -42,7 +42,16 @@ counties_shared_puma <- c(51059, 51610, 51600) #PUMAS include Fairfax County, Fa
 name_files <- "fairfax"
 ```
 
-## Data
+#Root folder of the repo RFR
+```{r}
+#directory of the file
+dirname(rstudioapi::getSourceEditorContext()$path)
+#dirname finds the root folder of the current document (fairfax_hlb.Rmd)
+root_repo <- dirname(dirname(dirname(rstudioapi::getSourceEditorContext()$path)))
+```
+
+
+## Data PUMS
 ```{r}
 #url
 url_xml <- "https://raw.githubusercontent.com/uva-bi-sdad/household_living_budget/main/documents/products/derived_variables/fairfax_va_acs_pums_derived_variables_2021.csv"
@@ -50,11 +59,7 @@ url_xml <- "https://raw.githubusercontent.com/uva-bi-sdad/household_living_budge
 #read csv from url
 dat_hlb <- read_csv(url_xml)
 
-#read csv directly
-#dat_hlb <- read_csv("~/git/household_living_budget/documents/products/derived_variables/fairfax_va_acs_pums_derived_variables_2021.csv")  
-
 ```
-
 
 # Crosswalks Census Tracts - PUMA
 ```{r}
@@ -63,42 +68,50 @@ dat_hlb <- read_csv(url_xml)
 
 # puma_ct <- read_delim("~/git/household_living_budget/data/demographic/crosswalks/2010_Census_Tract_to_2010_PUMA.txt", delim = ",")
 # puma_ct_20 <- read_delim("~/git/household_living_budget/data/demographic/crosswalks/2020_Census_Tract_to_2020_PUMA.txt", delim = ",")
-# 
-# # crosswalk for Fairfax County only
-# puma_ct_fairfax <- puma_ct %>% filter(STATEFP=='51', COUNTYFP== '059')
-# 
-# #puma_ct_fairfax_20 <- puma_ct_20 %>% filter(STATEFP=='51', COUNTYFP== '059')
-# 
-# puma_ct_fairfax_20_county <- puma_ct_20 %>% filter(STATEFP=='51', COUNTYFP== '059')
-# puma_ct_fairfax_20_city <- puma_ct_20 %>% filter(STATEFP=='51', COUNTYFP== '610')
-# puma_ct_fairfax_20_fallschurch <- puma_ct_20 %>% filter(STATEFP=='51', COUNTYFP== '600')
-# 
-# puma_ct_fairfax_20 <- rbind(puma_ct_fairfax_20_county, puma_ct_fairfax_20_city, puma_ct_fairfax_20_fallschurch)
-# 
-# #puma_ct_fairfax_2 <- puma_ct_fairfax %>% head(2)
-# puma_ct_fairfax$fips <- paste0(puma_ct_fairfax$STATEFP, puma_ct_fairfax$COUNTYFP, puma_ct_fairfax$TRACTCE )
-# puma_ct_fairfax_20$fips <- paste0(puma_ct_fairfax_20$STATEFP, puma_ct_fairfax_20$COUNTYFP, puma_ct_fairfax_20$TRACTCE )
-# 
-# #comparison
-# compare_puma_ct <- puma_ct_fairfax_20 %>% left_join(puma_ct_fairfax, by='fips')
-# table(compare_puma_ct$PUMA5CE.x, compare_puma_ct$PUMA5CE.y)
-# equivalence <-  compare_puma_ct %>% group_by(PUMA5CE.x) %>% summarise(equiv=first(PUMA5CE.y))
-# 
-# #rewrite categories of puma_ct_fairfax_20 (274 tracts) to match puma_ct_fairfax (258 tracts)
-# names(puma_ct_fairfax_20)[4] <- 'PUMA5CE_20'
-# 
-# puma_ct_fairfax_20 <- puma_ct_fairfax_20 %>% mutate(PUMA5CE= case_when(PUMA5CE_20 == '05901' ~ '59309',
-#                                                                        PUMA5CE_20 == '05902' ~ '59307', 
-#                                                                        PUMA5CE_20 == '05904' ~ '59305', 
-#                                                                        PUMA5CE_20 == '05905' ~ '59304', 
-#                                                                        PUMA5CE_20 == '05906' ~ '59306', 
-#                                                                        PUMA5CE_20 == '05907' ~ '59301', 
-#                                                                        PUMA5CE_20 == '05908' ~ '59302', 
-#                                                                        PUMA5CE_20 == '60001' ~ '59303', 
-#                                                                        PUMA5CE_20 == '61001' ~ '59308'
-#                                                       ) )
+
+# puma_ct: PUMAS 2010
+filepath <- paste0(root_repo, "/data/demographic/crosswalks/2010_Census_Tract_to_2010_PUMA.txt")
+puma_ct <- read_delim(filepath, delim = "," )
+# puma_ct_20: PUMAS 2020
+filepath <- paste0(root_repo, "/data/demographic/crosswalks/2020_Census_Tract_to_2020_PUMA.txt")
+puma_ct_20 <- read_delim(filepath, delim = ",")
+  
+# crosswalk for Fairfax County only
+puma_ct_fairfax <- puma_ct %>% filter(STATEFP=='51', COUNTYFP== '059')
+
+#puma_ct_fairfax_20 <- puma_ct_20 %>% filter(STATEFP=='51', COUNTYFP== '059')
+
+puma_ct_fairfax_20_county <- puma_ct_20 %>% filter(STATEFP=='51', COUNTYFP== '059')
+puma_ct_fairfax_20_city <- puma_ct_20 %>% filter(STATEFP=='51', COUNTYFP== '610')
+puma_ct_fairfax_20_fallschurch <- puma_ct_20 %>% filter(STATEFP=='51', COUNTYFP== '600')
+
+puma_ct_fairfax_20 <- rbind(puma_ct_fairfax_20_county, puma_ct_fairfax_20_city, puma_ct_fairfax_20_fallschurch)
+
+#puma_ct_fairfax_2 <- puma_ct_fairfax %>% head(2)
+puma_ct_fairfax$fips <- paste0(puma_ct_fairfax$STATEFP, puma_ct_fairfax$COUNTYFP, puma_ct_fairfax$TRACTCE )
+puma_ct_fairfax_20$fips <- paste0(puma_ct_fairfax_20$STATEFP, puma_ct_fairfax_20$COUNTYFP, puma_ct_fairfax_20$TRACTCE )
+
+#comparison
+compare_puma_ct <- puma_ct_fairfax_20 %>% left_join(puma_ct_fairfax, by='fips')
+table(compare_puma_ct$PUMA5CE.x, compare_puma_ct$PUMA5CE.y)
+equivalence <-  compare_puma_ct %>% group_by(PUMA5CE.x) %>% summarise(equiv=first(PUMA5CE.y))
+
+#rewrite categories of puma_ct_fairfax_20 (274 tracts) to match puma_ct_fairfax (258 tracts)
+names(puma_ct_fairfax_20)[4] <- 'PUMA5CE_20'
+
+puma_ct_fairfax_20 <- puma_ct_fairfax_20 %>% mutate(PUMA5CE= case_when(PUMA5CE_20 == '05901' ~ '59309',
+                                                                       PUMA5CE_20 == '05902' ~ '59307',
+                                                                       PUMA5CE_20 == '05904' ~ '59305',
+                                                                       PUMA5CE_20 == '05905' ~ '59304',
+                                                                       PUMA5CE_20 == '05906' ~ '59306',
+                                                                       PUMA5CE_20 == '05907' ~ '59301',
+                                                                       PUMA5CE_20 == '05908' ~ '59302',
+                                                                       PUMA5CE_20 == '60001' ~ '59303',
+                                                                       PUMA5CE_20 == '61001' ~ '59308'
+                                                      ) )
 
 ```
+
 
 #  ######################## 2 Household Living Budget Components - HLB  ########################
 
@@ -112,13 +125,15 @@ dat_hlb <- read_csv(url_xml)
 #adjustmen Feeding America
 #https://map.feedingamerica.org/county/2020/overall/virginia
 
-#data counties VA
-# food_cost_adj <- read_excel("~/git/household_living_budget/data/household_living_budget/food/va_ct_usda_sep22_adjusted_low_cost_meal_plan_costs.xlsx")
-food_cost_adj <- read_excel("~/git/household_living_budget/data/household_living_budget/food/va_ct_feeding_america_map_meal_gap_2022SEP.xlsx")
+#creat path to the file
+filepath <- paste0(root_repo, "/data/household_living_budget/food/va_ct_feeding_america_map_meal_gap_2022SEP.xlsx")
+#read file
+food_cost_adj <- read_excel(filepath)
 
 #data USDA USA
-# usda_meal_plan_sep2022 <- read_csv("~/git/household_living_budget/data/household_living_budget/food/usda_meal_plan_sep2022.csv", skip = 1)
-usda_meal_plan_sep2022 <- read_csv("~/git/household_living_budget/data/household_living_budget/food/national_usda_meal_plans_2022SEP.csv", skip = 1)
+filepath <- paste0(root_repo, "/data/household_living_budget/food/national_usda_meal_plans_2022SEP.csv")
+usda_meal_plan_sep2022 <- read_csv(filepath, skip = 1)
+
 
 #data USDA categories and cost
 usda_low_cost_meal <- usda_meal_plan_sep2022 %>% select(group=`...2`, monthly_cost=`Low-cost...6`) %>% filter( !is.na(monthly_cost)) %>% filter(monthly_cost!= 'plan')
@@ -183,7 +198,9 @@ food_hlb <- food_cost_long %>% group_by(serialno) %>% summarise(food_cost_month 
 # Childcare Cost
 ```{r}
 #data -  Dept of Labor
-childcare_dol <- read_excel("~/git/household_living_budget/data/household_living_budget/childcare/dmv_dol_childcare_costs_2022.xlsx")
+filepath <- paste0(root_repo, "/data/household_living_budget/childcare/dmv_dol_childcare_costs_2022.xlsx")
+childcare_dol <- read_excel(filepath)
+
 #data county
 childcare_dol_county <- childcare_dol %>% filter(year==2022) %>% filter(FIPS == county_fips) %>%
   select("name_county", "FIPS", "year", "infant_family", "toddler_family", "preschooler_family", "schooler_family" )
@@ -226,19 +243,21 @@ df_hlb <- df_hlb %>% left_join( as.data.frame(childcare_hlb) %>% select(serialno
 ```
 
 
-# STOP HERE  #####################
-
 #Fill in information matrix tract-income-combinations_hh (tic)
 ```{r}
 #df_0_actual vs (tract, puma)
 
 #geoid AND puma
 geoid_puma <- puma_ct_fairfax_20 %>% filter(COUNTYFP=="059") %>% select(geoid=fips, puma=PUMA5CE)
-df_hlb$PUMA <- as.character(df_hlb$PUMA)
+df_hlb$puma <- as.character(df_hlb$puma)
 
 #joing geoid_puma with df_hlb: we are saying that the structure of every puma replicates for every census tract
-df_hlb_tic <- geoid_puma %>% left_join(df_hlb %>% select(PUMA, SERIAL,income_cat, hhincome, hh_recode, hh_compos, adult, num_hh=pop, food_cost_month, healthcare_cost_month, childcare_cost_month), 
-                                        by = c("puma"="PUMA"))
+# df_hlb_tic <- geoid_puma %>% left_join(df_hlb %>% select(puma, serialno, income_cat, hhincome, hh_recode, hh_compos, adult, num_hh=pop, food_cost_month, healthcare_cost_month, childcare_cost_month), 
+#                                         by = c("puma"))
+#changed
+df_hlb_tic <- geoid_puma %>% left_join(df_hlb %>% select(puma, serialno, hh_income_cat, hh_income, hh_size_recode, hh_comb, no_adult, hh_wt, food_cost_month, childcare_cost_month), 
+                                        by = c("puma"))
+
 
 ```
 
@@ -247,7 +266,8 @@ df_hlb_tic <- geoid_puma %>% left_join(df_hlb %>% select(PUMA, SERIAL,income_cat
 # Housing Cost 
 ```{r}
 #data fro HUD
-housing_cost_va_updated <- read_excel("~/git/household_living_budget/data/household_living_budget/housing/va_tr_hud_2022_housing_cost.xlsx") %>% select(-c(`...1`))
+filepath <- paste0(root_repo, "/data/household_living_budget/housing/va_tr_hud_2022_housing_cost.xlsx")
+housing_cost_va_updated <- read_excel(filepath) %>% select(-c(`...1`))
 
 housing_cost_va_updated <- housing_cost_va_updated %>% mutate(fips=substr(geoid,1,5)) %>% filter(fips %in% counties_shared_puma )
 
@@ -273,7 +293,8 @@ housing_cost_long <- housing_cost_county %>% pivot_longer(cols=c(`1` ,  `2`  , `
 # Cost of Transportation
 ```{r}
 #data va 2022 updated
-transp_cost_va <- read_excel("~/git/household_living_budget/data/household_living_budget/transportation/va_tr_cnt_transportation_cost_2022.xlsx")
+filepath <- paste0( root_repo, "/data/household_living_budget/transportation/va_tr_cnt_transportation_cost_2022.xlsx")
+transp_cost_va <- read_excel(filepath)
 
 ####
 #create fips
@@ -290,7 +311,9 @@ transp_cost_county_tract <- transp_cost_va %>% filter(fips %in% counties_shared_
 #Broadband cost 
 ```{r}
 #data
-dat_broadband <- read.csv("~/git/household_living_budget/data/household_living_budget/broadband/dcmdva_hdcttrbg_2021_broadband_now_internet_package_price.csv.xz")
+filepath <- paste0(root_repo, "/data/household_living_budget/broadband/dcmdva_hdcttrbg_2021_broadband_now_internet_package_price.csv.xz")
+dat_broadband <- read.csv(filepath)
+
 #county id
 dat_broadband$county <- substr(dat_broadband$geoid,1,5)
 
@@ -307,39 +330,39 @@ bband_tract <- bband_county_tr %>% mutate(broadband_cost_month = value*(1+price_
 #Merge with df_hlb_tic
 ```{r}
 #housing
-df_hlb_tic$hh_size <-  as.character(df_hlb_tic$hh_recode)
-df_hlb_tic <- df_hlb_tic %>% left_join(housing_cost_long, by = c("geoid", "hh_size") )
+df_hlb_tic$hh_size_recode <-  as.character(df_hlb_tic$hh_size_recode)
+df_hlb_tic <- df_hlb_tic %>% left_join(housing_cost_long, by = c("geoid", "hh_size_recode"= "hh_size") )
 
 #transportation
-df_hlb_tic <- df_hlb_tic %>% left_join(transp_cost_county_tract %>% select(tract, Transport_1), by = c("geoid"="tract") ) %>% mutate(transp_cost_month = adult*Transport_1) 
+df_hlb_tic <- df_hlb_tic %>% left_join(transp_cost_county_tract %>% select(tract, Transport_1), by = c("geoid"="tract") ) %>% mutate(transp_cost_month = no_adult*Transport_1) 
 df_hlb_tic <- df_hlb_tic %>% select(-c(Transport_1))
 
-#NAs - average by hh_size
-complement_trasp <- df_hlb_tic %>% select(hh_size=hh_recode, transp_cost_month) %>% group_by(hh_size) %>% summarise(mean_transp = mean(transp_cost_month, na.rm = TRUE))
+#NAs - average by hh_size_recode
+complement_trasp <- df_hlb_tic %>% select(hh_size_recode, transp_cost_month) %>% group_by(hh_size_recode) %>% summarise(mean_transp = mean(transp_cost_month, na.rm = TRUE))
 
-#complete NAs by hh_size
+#complete NAs by hh_size_recode
 df_hlb_tic <- df_hlb_tic %>% mutate(transp_cost_month = case_when( !is.na(transp_cost_month) ~ transp_cost_month, 
-                                                     is.na(transp_cost_month) & hh_size==1 ~ complement_trasp %>% filter(hh_size==1) %>% select(mean_transp) %>% pull(),
-                                                     is.na(transp_cost_month) & hh_size==2 ~ complement_trasp %>% filter(hh_size==2) %>% select(mean_transp) %>% pull(),
-                                                     is.na(transp_cost_month) & hh_size==3 ~ complement_trasp %>% filter(hh_size==3) %>% select(mean_transp) %>% pull(),
-                                                     is.na(transp_cost_month) & hh_size==4 ~ complement_trasp %>% filter(hh_size==4) %>% select(mean_transp) %>% pull(),
-                                                     is.na(transp_cost_month) & hh_size==5 ~ complement_trasp %>% filter(hh_size==5) %>% select(mean_transp) %>% pull()
+                                                     is.na(transp_cost_month) & hh_size_recode==1 ~ complement_trasp %>% filter(hh_size_recode==1) %>% select(mean_transp) %>% pull(),
+                                                     is.na(transp_cost_month) & hh_size_recode==2 ~ complement_trasp %>% filter(hh_size_recode==2) %>% select(mean_transp) %>% pull(),
+                                                     is.na(transp_cost_month) & hh_size_recode==3 ~ complement_trasp %>% filter(hh_size_recode==3) %>% select(mean_transp) %>% pull(),
+                                                     is.na(transp_cost_month) & hh_size_recode==4 ~ complement_trasp %>% filter(hh_size_recode==4) %>% select(mean_transp) %>% pull(),
+                                                     is.na(transp_cost_month) & hh_size_recode==5 ~ complement_trasp %>% filter(hh_size_recode==5) %>% select(mean_transp) %>% pull()
                                                      ))
 
 
 #broadband - internet
 df_hlb_tic <- df_hlb_tic %>% left_join(bband_tract, by = c("geoid") )
 
-#NAs - average by hh_size
-complement_bband <- df_hlb_tic %>% select(hh_size=hh_recode, broadband_cost_month) %>% group_by(hh_size) %>% summarise(mean_bband = mean(broadband_cost_month, na.rm = TRUE))
+#NAs - average by hh_size_recode
+complement_bband <- df_hlb_tic %>% select(hh_size_recode, broadband_cost_month) %>% group_by(hh_size_recode) %>% summarise(mean_bband = mean(broadband_cost_month, na.rm = TRUE))
 
-#complete NAs by hh_size
+#complete NAs by hh_size_recode
 df_hlb_tic <- df_hlb_tic %>% mutate(broadband_cost_month = case_when( !is.na(broadband_cost_month) ~ broadband_cost_month, 
-                                                     is.na(broadband_cost_month) & hh_size==1 ~ complement_bband %>% filter(hh_size==1) %>% select(mean_bband) %>% pull(),
-                                                     is.na(broadband_cost_month) & hh_size==2 ~ complement_bband %>% filter(hh_size==2) %>% select(mean_bband) %>% pull(),
-                                                     is.na(broadband_cost_month) & hh_size==3 ~ complement_bband %>% filter(hh_size==3) %>% select(mean_bband) %>% pull(),
-                                                     is.na(broadband_cost_month) & hh_size==4 ~ complement_bband %>% filter(hh_size==4) %>% select(mean_bband) %>% pull(),
-                                                     is.na(broadband_cost_month) & hh_size==5 ~ complement_bband %>% filter(hh_size==5) %>% select(mean_bband) %>% pull()
+                                                     is.na(broadband_cost_month) & hh_size_recode==1 ~ complement_bband %>% filter(hh_size_recode==1) %>% select(mean_bband) %>% pull(),
+                                                     is.na(broadband_cost_month) & hh_size_recode==2 ~ complement_bband %>% filter(hh_size_recode==2) %>% select(mean_bband) %>% pull(),
+                                                     is.na(broadband_cost_month) & hh_size_recode==3 ~ complement_bband %>% filter(hh_size_recode==3) %>% select(mean_bband) %>% pull(),
+                                                     is.na(broadband_cost_month) & hh_size_recode==4 ~ complement_bband %>% filter(hh_size_recode==4) %>% select(mean_bband) %>% pull(),
+                                                     is.na(broadband_cost_month) & hh_size_recode==5 ~ complement_bband %>% filter(hh_size_recode==5) %>% select(mean_bband) %>% pull()
                                                      ))
 
 ```
