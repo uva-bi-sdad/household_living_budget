@@ -158,7 +158,8 @@ no_teenager=  mean(c( as.numeric(usda_low_cost_meal %>% filter(group=='12-13 yea
 meal_avg_cost_us <- 3.25
 # Fairfax Average Meal Cost: $4.23
 #meal_avg_cost_fairfax_va <- 4.23
-meal_avg_cost_fairfax_va <- food_cost_adj %>% filter(geoid==county_fips) %>% filter(measure == 'Cost_Per_Meal') %>%  pull(value)
+meal_avg_cost_fairfax_va <- food_cost_adj %>% filter(FIPS==county_fips) %>% pull(`Cost Per Meal (1 Year)`)
+
 #adjustment
 adj_food_cost <- meal_avg_cost_fairfax_va /meal_avg_cost_us
 #food inflation - BLS to adjust meal cost from 2020

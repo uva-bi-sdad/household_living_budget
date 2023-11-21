@@ -1,0 +1,48 @@
+---
+title: "USDA meal plan 2022"
+author: "cm"
+date: "2023-11-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# libraries
+```{r}
+library(readxl)
+library(readr)
+library(pdftools)
+```
+
+#data
+```{r}
+# check that Java is installed
+library(rJava)
+#remotes::install_github(c("ropensci/tabulizerjars", "ropensci/tabulizer"))
+library(tabulizer)
+
+#raw data link from usda for September 2022 
+## change-updates ##
+link_usda <- "https://fns-prod.azureedge.us/sites/default/files/media/file/CostofFoodSep2022LowModLib.pdf"
+
+#temp file
+download.file(link_usda, destfile = "/tmp/CostofFoodSep2022LowModLib.pdf")
+
+#extract table
+usda_meal_plan_sep2022 <- extract_tables(
+  file   = "/tmp/CostofFoodSep2022LowModLib.pdf", 
+  method = "decide", 
+  output = "data.frame")
+
+#retrieve table
+usda_meal_plan_sep2022 <- usda_meal_plan_sep2022[[1]]
+
+#usda_mealplan <- usda_meal_plan_sep2022[[1]]
+
+#save in original data file 
+#include # in next line to avoid repeating the file when saving/running
+#write.csv(usda_meal_plan_sep2022, paste0( dirname(rstudioapi::getSourceEditorContext()$path), "/usda_meal_plan_sep2022.csv" ) )
+```
+

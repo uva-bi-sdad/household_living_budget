@@ -1,0 +1,53 @@
+---
+title: "Untitled"
+author: "cm"
+date: "2023-11-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Libraries
+```{r}
+library(dplyr)
+library(readxl)
+#install.packages("xlsx")
+library(xlsx)
+
+```
+
+# Data
+```{r}
+# data obtained from Feeding America: Request form
+# https://feedingamerica.az1.qualtrics.com/jfe/form/SV_5tJt5m9K62hRC6N
+
+#load original data 
+map_the_meal_gap_modifier <- read_excel(paste0( dirname(rstudioapi::getSourceEditorContext()$path), "/MMG2022_2020-2019Data_ToShare.xlsx" ), 
+                      sheet = "County")
+
+```
+
+
+# Data VA
+```{r}
+#filter data
+map_the_meal_gap_modifier <- map_the_meal_gap_modifier[,c(1,21)]
+
+map_the_meal_gap_modifier <- map_the_meal_gap_modifier %>%
+  filter(substr(as.character(FIPS),1,2) == '51')
+
+map_the_meal_gap_modifier <- map_the_meal_gap_modifier %>%
+  filter(FIPS > 10000)
+map_the_meal_gap_modifier <- map_the_meal_gap_modifier[1:133,]
+
+#3.25 is average cost nationwide, taken from https://map.feedingamerica.org/county/2020/overall/
+map_the_meal_gap_modifier$modifier <- map_the_meal_gap_modifier$`Cost Per Meal (1 Year)`/3.25
+
+#save in original data file 
+#include # in next line to avoid repeating the file when saving/running
+#write.xlsx(map_the_meal_gap_modifier, paste0( dirname(dirname(rstudioapi::getSourceEditorContext()$path)), "/va_ct_feeding_america_map_meal_gap_2022SEP.xlsx" ))
+```
+
+
