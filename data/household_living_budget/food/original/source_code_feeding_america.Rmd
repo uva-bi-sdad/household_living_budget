@@ -23,8 +23,9 @@ library(xlsx)
 # data obtained from Feeding America: Request form
 # https://feedingamerica.az1.qualtrics.com/jfe/form/SV_5tJt5m9K62hRC6N
 
-#load original data 
-map_the_meal_gap_modifier <- read_excel(paste0( dirname(rstudioapi::getSourceEditorContext()$path), "/MMG2022_2020-2019Data_ToShare.xlsx" ), 
+#load original data
+#original name: MMG2022_2020-2019Data_ToShare.xlsx
+map_the_meal_gap_modifier <- read_excel(paste0( dirname(rstudioapi::getSourceEditorContext()$path), "/feeding_america_map_meal_gap_2022.xlsx" ), 
                       sheet = "County")
 
 ```
