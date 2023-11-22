@@ -1,0 +1,32 @@
+---
+title: "Untitled"
+author: "cm"
+date: "2023-11-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#libraries
+```{r}
+library(dplyr)
+library(readxl)
+library(xlsx)
+```
+
+
+#data
+```{r}
+destination_folder <- dirname(rstudioapi::getSourceEditorContext()$path)
+
+# HUD Data
+download.file("https://www.huduser.gov/portal/datasets/fmr/fmr2023/FY23_FMRs.xlsx", destfile = paste0( destination_folder, "/FY23_FMRs.xlsx") )
+
+download.file("https://www.huduser.gov/portal/datasets/fmr/fmr2023/fy2023_safmrs.xlsx", destfile = paste0( destination_folder, "/fy2023_safmrs.xlsx"))
+
+# crosswalk from ZCTA to county
+download.file("https://www2.census.gov/geo/docs/maps-data/data/rel/zcta_county_rel_10.txt", destfile = paste0( destination_folder, "/zcta_county_rel_10.txt" ))
+```
+
