@@ -1,0 +1,37 @@
+---
+title: "transportation cost - original"
+author: "cm"
+date: "2023-11-22"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#libraries
+```{r}
+library(dplyr)
+library(readxl)
+library(xlsx)
+library(readr)
+library(pdftools)
+# check that Java is installed
+library(rJava)
+#remotes::install_github(c("ropensci/tabulizerjars", "ropensci/tabulizer"))
+library(tabulizer)
+```
+
+
+#data
+```{r}
+#source: https://htaindex.cnt.org/download/data.php
+#registration needed. Choose Virginia and download
+
+#Data dictionary: downloaded as pdf or can be browsed at:
+browseURL("https://htaindex.cnt.org/download/data-dictionary.php")
+
+```
+
+
+

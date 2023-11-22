@@ -1,0 +1,37 @@
+---
+title: "prepare data - transportation"
+author: "cm"
+date: "2023-11-22"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+
+#call orginal data
+cnt_data <- read_csv( paste0( dirname(dirname(rstudioapi::getSourceEditorContext()$path)), "/original/htaindex2020_data_tracts_51.zip") )
+
+#average Persons Per Household US: 2.6
+#https://www.census.gov/quickfacts/fact/table/US/HCN010217
+persons_per_hh <- 2.6
+
+#filter only relevant variables
+cnt_data_init <- cnt_data %>% select(tract, cbsa, t_cost_ami)
+
+#remove " characters in columns tract
+cnt_data_init <- cnt_data_init %>% mutate(tract = as.character(gsub("\"", "", tract)), 
+                                          Transport_1 = t_cost_ami/12/persons_per_hh) 
+
+cnt_data_month <- cnt_data_init %>% select(tract, Transport_1)
+
+#save
+write.xlsx(cnt_data_month, paste0( dirname(rstudioapi::getSourceEditorContext()$path), "/va_tr_cnt_transportation_cost_2022_new.xlsx") , row.names = FALSE )
+
+#values may change due to updates by the CNT.
+
+
+```
+
