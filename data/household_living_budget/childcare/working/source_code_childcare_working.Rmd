@@ -1,0 +1,33 @@
+---
+title: "childcare costs working"
+author: "cm"
+date: "2023-11-22"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+destination_folder <- dirname(dirname(rstudioapi::getSourceEditorContext()$path))
+
+#load original data dol
+data_dol <- read_xlsx( paste0(destination_folder, "/original/nationaldatabaseofchildcareprices.xlsx"))
+
+#filter
+fips_ncr <- c(11001, 24017, 24021, 24031, 24033, 51013, 51059, 51107, 51153, 51510, 51600, 51610, 51683, 51685)
+
+data_dol_ncr <- data_dol %>% filter(County_FIPS_Code %in% fips_ncr)
+
+#select relevant variables for infant, toodlers, preschoolers and schoolers, center based and family based
+data_dol_ncr <- data_dol_ncr %>% 
+  select(name_county=County_Name, FIPS=County_FIPS_Code, year=StudyYear, 
+         infant_center=MCBto5, toddler_center=MC24to29, preschooler_center=MC36to41, schooler_center=MCSA, 
+         infant_family=MFCC6to11, toddler_family=MFCC24to29, preschooler_family=MFCC36to41, schooler_family=MFCCSA )
+
+#save
+write.xlsx( as.data.frame(data_dol_ncr) , paste0( dirname(rstudioapi::getSourceEditorContext()$path), "/dmv_dol_childcare_costs_2022.xlsx"), row.names= F )
+
+```
+

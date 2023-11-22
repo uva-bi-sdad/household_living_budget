@@ -1,0 +1,22 @@
+---
+title: "childcare costs original"
+author: "cm"
+date: "2023-11-22"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#data
+```{r}
+
+destination_folder <- dirname(rstudioapi::getSourceEditorContext()$path)
+
+# DOL data  - National Database of Childcare Prices: 2008-2018 
+download.file("https://www.dol.gov/sites/dolgov/files/WB/media/nationaldatabaseofchildcareprices.xlsx", destfile = paste0( destination_folder, "/nationaldatabaseofchildcareprices.xlsx") )
+
+
+```
+
