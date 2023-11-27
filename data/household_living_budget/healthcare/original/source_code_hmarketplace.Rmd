@@ -1,0 +1,24 @@
+---
+title: "Untitled"
+author: "cm"
+date: "2023-11-27"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#data
+
+```{r}
+
+destination_folder <- dirname(rstudioapi::getSourceEditorContext()$path)
+
+# 2023 QHP landscape data   - Qualified Health Plans - Health Marketplace
+#download.file("https://data.healthcare.gov/datafile/py2023/individual_market_medical.zip", destfile = paste0( destination_folder, "/individual_market_medical.zip") )
+
+#Important Note: The 2023 QHP landscape data has 112 MB, and this exceeds GitHub's file size limit of 100.00 MB. You can download the orinal data with the code lines above but delete the original data, in case you want to push updates to your repo. 
+
+```
+
